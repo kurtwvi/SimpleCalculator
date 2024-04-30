@@ -1,0 +1,116 @@
+// Importing necessary JavaFX libraries
+import javafx.application.*;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.*;
+import javafx.stage.*;
+
+// Class definition for the SimpleCalculator application
+public class SimpleCalculator extends Application {
+    // Declaration of variables
+    private double result = 0; // Stores the result of calculations
+    private double result1 = 0; // Not currently used
+
+    // Overriding the start method to initialize the application
+    @Override
+    public void start(Stage stage) {
+        // Setting up text fields for input
+        TextField num1 = new TextField(); // Input field for the first number
+        TextField num2 = new TextField(); // Input field for the second number
+
+        // Styling input fields
+        num1.setMaxWidth(150);
+        num1.setFont(Font.font("Arial", 20));
+        num2.setMaxWidth(150);
+        num2.setFont(Font.font("Arial", 20));
+
+        // Setting up an answer field that cannot be edited
+        TextField answerField = new TextField(); // Displays the result of calculations
+        answerField.setMaxWidth(250);
+        answerField.setFont(Font.font("Arial", 20));
+        answerField.setEditable(false);
+
+        // Creating buttons for arithmetic operations
+        Button addButton = new Button("+"); // Addition button
+        Button subButton = new Button("-"); // Subtraction button
+        Button mulButton = new Button("*"); // Multiplication button
+        Button divButton = new Button("/"); // Division button
+        Button clrButton = new Button("Clear"); // Clears input fields and result
+
+        // Setting sizes for buttons
+        addButton.setPrefSize(50, 30);
+        subButton.setPrefSize(50, 30);
+        mulButton.setPrefSize(50, 30);
+        divButton.setPrefSize(50, 30);
+        clrButton.setPrefSize(70, 30);
+
+        // Setting up event handlers for arithmetic operation buttons
+        addButton.setOnAction(e -> performOperation(num1, num2, "+", answerField));
+        subButton.setOnAction(e -> performOperation(num1, num2, "-", answerField));
+        mulButton.setOnAction(e -> performOperation(num1, num2, "*", answerField));
+        divButton.setOnAction(e -> performOperation(num1, num2, "/", answerField));
+        clrButton.setOnAction(e -> clearFields(num1, num2, answerField));
+
+        // Setting up the layout
+        VBox root = new VBox();
+        root.setSpacing(10);
+        root.setAlignment(Pos.CENTER);
+
+        // Adding GUI components to the layout
+        root.getChildren().addAll(num1, num2, answerField, addButton, subButton, mulButton, divButton, clrButton);
+
+        // Creating the scene and setting it to the stage
+        Scene scene = new Scene(root, 400, 350);
+        stage.setScene(scene);
+        stage.setTitle("Simple Calculator by Kurt Wilmond Vince S. Dimasuhid");
+        stage.show();
+    }
+
+    // Method to perform arithmetic operation based on the button clicked
+    private void performOperation(TextField num1, TextField num2, String operator, TextField answerField) {
+        double operand1 = Double.parseDouble(num1.getText());
+        double operand2 = Double.parseDouble(num2.getText());
+        String operationResult = "";
+
+        // Performing the selected operation
+        switch (operator) {
+            case "+":
+                result = operand1 + operand2;
+                break;
+            case "-":
+                result = operand1 - operand2;
+                break;
+            case "*":
+                result = operand1 * operand2;
+                break;
+            case "/":
+                if (operand2 == 0) {
+                    operationResult = "Cannot divide by zero";
+                } else {
+                    result = operand1 / operand2;
+                }
+                break;
+        }
+
+        // Displaying the result
+        if (operationResult.isEmpty()) {
+            answerField.setText("Answer: " + result);
+        } else {
+            answerField.setText(operationResult);
+        }
+    }
+
+    // Method to clear the input fields and result
+    private void clearFields(TextField num1, TextField num2, TextField answerField) {
+        num1.clear();
+        num2.clear();
+        answerField.clear();
+    }
+
+    // Main method to launch the application
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
